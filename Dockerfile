@@ -7,8 +7,12 @@ WORKDIR /app
 # Copy package files from backend folder (build context is repo root)
 COPY backend/package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install production deps (use lockfile if present)
+RUN if [ -f package-lock.json ]; then \
+      npm ci --omit=dev; \
+    else \
+      npm install --omit=dev; \
+    fi
 
 # Copy backend application files
 COPY backend/. .
