@@ -1,0 +1,28 @@
+# Node
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# VCS
+.git
+.gitignore
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project artifacts
+csv/
+data/
+logs/
+
+# Local env files (Render manages envs)
+backend/.env
+.env
+.env.*
+
+# Editor
+.vscode/
+.idea/
+*.swp

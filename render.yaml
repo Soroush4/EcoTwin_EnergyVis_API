@@ -5,8 +5,7 @@ services:
     plan: free
     autoDeploy: true
     healthCheckPath: /api/health
-    dockerfilePath: backend/Dockerfile
-    buildContext: .
+    dockerfilePath: Dockerfile
     envVars:
       - key: NODE_ENV
         value: production

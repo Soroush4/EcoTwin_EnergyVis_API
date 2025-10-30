@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 require('dotenv').config();
 
 const app = express();
@@ -12,8 +13,11 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
-// Serve static files from frontend directory (bundled into /app/frontend in Docker)
-app.use(express.static(path.join(__dirname, './frontend')));
+// Optionally serve static frontend if available
+const frontendDir = path.join(__dirname, './frontend');
+if (fs.existsSync(frontendDir)) {
+    app.use(express.static(frontendDir));
+}
 
 // API Routes
 app.get('/api/mapbox-config', (req, res) => {
@@ -58,9 +62,16 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Serve the main application
+// Serve the main application if frontend exists; otherwise show API status
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, './frontend/index.html'));
+    if (fs.existsSync(path.join(frontendDir, 'index.html'))) {
+        return res.sendFile(path.join(frontendDir, 'index.html'));
+    }
+    return res.json({
+        name: 'EcoTwinAI API',
+        status: 'OK',
+        message: 'Frontend not bundled in this service. Use /api/* endpoints or deploy frontend separately.'
+    });
 });
 
 // Error handling middleware
