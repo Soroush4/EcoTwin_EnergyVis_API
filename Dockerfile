@@ -13,8 +13,7 @@ RUN npm ci --only=production
 # Copy backend application files
 COPY backend/. .
 
-# Copy frontend static files so Express can serve them
-COPY frontend ./frontend
+## Note: Frontend is optional and not required for backend-only deployments
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs
